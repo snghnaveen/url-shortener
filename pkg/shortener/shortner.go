@@ -39,8 +39,10 @@ func ShortenURL(inURL string) (string, error) {
 	}
 
 	// store shorten url in redis
-	if err := c.Set(context.TODO(), shortenURL, inURL, time.Second*100).
-		Err(); err != nil {
+	if err := c.Set(context.TODO(), shortenURL, inURL,
+		time.Second*time.Duration(
+			util.GetConfig().TTLShortenKey,
+		)).Err(); err != nil {
 		util.Logger().Error("error saving shorten url", zap.Error(err))
 		return "", err
 	}

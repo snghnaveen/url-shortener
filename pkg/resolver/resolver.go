@@ -16,7 +16,10 @@ func EncodeURL(inURL string) (string, error) {
 	hash := sha1.New()
 	hash.Write([]byte(inURL))
 	shortURL := base64.URLEncoding.EncodeToString(hash.Sum(nil))[:8]
-	util.Logger().Debug("shortURL", zap.String("inURL", shortURL))
+	util.Logger().Debug("encodeURL given url",
+		zap.String("inURL", inURL),
+		zap.String("shortURL", shortURL),
+	)
 
 	return shortURL, nil
 }
@@ -26,9 +29,11 @@ func AddScheme(inURL string) string {
 	if inURL[:4] != "http" {
 		inURL = "http://" + inURL
 	}
+	util.Logger().Debug("scheme added", zap.String("inURL", inURL))
 	return inURL
 }
 
+// FormatURL will validate and returns *url.URL of given url
 func FormatURL(inURL string) (*url.URL, error) {
 	if !govalidator.IsURL(inURL) {
 		return nil, errors.New("invalid url requested")
@@ -48,6 +53,4 @@ func FormatURL(inURL string) (*url.URL, error) {
 	}
 
 	return u, err
-
-	// return inURL, nil
 }

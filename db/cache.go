@@ -1,10 +1,9 @@
 package db
 
 import (
-	"context"
 	"sync"
-	"time"
 
+	"github.com/alicebob/miniredis/v2"
 	"github.com/redis/go-redis/v9"
 	"github.com/snghnaveen/url-shortener/util"
 	"go.uber.org/zap"
@@ -12,40 +11,48 @@ import (
 
 var cache = make(map[int]*redis.Client)
 var mu sync.Mutex
+var once sync.Once
 
 // GetCacheClientWithDB return cache client with requested db
 func GetCacheClientWithDB(db int) (*redis.Client, error) {
 	mu.Lock()
 	defer mu.Unlock()
+
 	if _, ok := cache[db]; !ok {
 		var rdb *redis.Client
+		if util.IsTestingMode() {
+			util.Logger().Info("running testing mode redis",
+				zap.String("ForTestGetRedisURL", ForTestGetRedisURL()))
+			rdb = redis.NewClient(&redis.Options{
+				Addr: ForTestGetRedisURL(),
+				DB:   db,
+			})
+		} else {
+			opt, err := redis.ParseURL(util.GetConfig().RedisURL)
+			if err != nil {
+				return nil, err
+			}
 
-		opt, err := redis.ParseURL(util.GetConfig().RedisURL)
-		if err != nil {
-			return nil, err
+			rdb = redis.NewClient(&redis.Options{
+				Addr: opt.Addr,
+				DB:   db,
+			})
 		}
-
-		rdb = redis.NewClient(&redis.Options{
-			Addr: opt.Addr,
-			DB:   db,
-		})
 
 		cache[db] = rdb
 	}
 	return cache[db], nil
 }
 
-func Tmp() {
-	ee, err := GetCacheClientWithDB(1)
-	util.Logger().Info("tmppppppp", zap.Any("err", err))
+var testClientUrl string
 
-	err = ee.Set(context.TODO(),
-		"test-key",
-		"test-value", time.Second*100).Err()
-
-	util.Logger().Info("tmp22222222", zap.Any("err", err))
-	val, err := ee.Get(context.TODO(), "test-key").Result()
-	util.Logger().Info("tmp33333", zap.Any("err", err))
-	util.Logger().Info("tmp4444444", zap.Any("val", val))
-
+func ForTestGetRedisURL() string {
+	once.Do(func() {
+		s, err := miniredis.Run()
+		if err != nil {
+			panic("unable to run miniredis")
+		}
+		testClientUrl = s.Addr()
+	})
+	return testClientUrl
 }

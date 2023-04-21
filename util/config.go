@@ -1,6 +1,8 @@
 package util
 
 import (
+	"os"
+
 	"github.com/spf13/viper"
 )
 
@@ -19,6 +21,9 @@ type Config struct {
 	Environment string `mapstructure:"ENVIRONMENT"`
 	AppPort     string `mapstructure:"APP_PORT"`
 	RedisURL    string `mapstructure:"REDIS_URL"`
+
+	MaxMetricsRecords int `mapstructure:"MAX_METRICS"`
+	TTLShortenKey     int `mapstructure:"TTL_SHORTEN_URL_IN_SECONDS"`
 }
 
 // LoadConfig reads configuration from file or environment variables.
@@ -40,7 +45,22 @@ func LoadConfig(path string) (config Config, err error) {
 	if err == nil {
 		conf = config
 	}
+
+	setMissingIfAny()
+
 	return
+}
+
+func setMissingIfAny() {
+	if GetConfig().MaxMetricsRecords == 0 {
+		// Default max metrics
+		conf.MaxMetricsRecords = 3
+	}
+
+	if GetConfig().TTLShortenKey == 0 {
+		// Default TTLShortenKey
+		conf.TTLShortenKey = 3600
+	}
 }
 
 func GetConfig() Config {
@@ -49,4 +69,9 @@ func GetConfig() Config {
 
 func IsProdMode() bool {
 	return GetConfig().Environment == EnvProd
+}
+
+func IsTestingMode() bool {
+	return GetConfig().Environment == EnvTesting ||
+		os.Getenv(EnvKey) == EnvTesting
 }

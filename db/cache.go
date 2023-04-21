@@ -17,7 +17,6 @@ var mu sync.Mutex
 func GetCacheClientWithDB(db int) (*redis.Client, error) {
 	mu.Lock()
 	defer mu.Unlock()
-	mu.Lock()
 	if _, ok := cache[db]; !ok {
 		var rdb *redis.Client
 

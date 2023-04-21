@@ -2,18 +2,31 @@ package main
 
 import (
 	"log"
+	"net/http"
+	"os"
 
-	"github.com/snghnaveen/url-shortner/db"
+	"github.com/snghnaveen/url-shortner/routers"
 	"github.com/snghnaveen/url-shortner/util"
+	"go.uber.org/zap"
 )
 
 func main() {
-	_, err := util.LoadConfig(".")
+	config, err := util.LoadConfig(".")
 	if err != nil {
 		log.Fatal(err, "cannot load config")
 	}
 
-	db.Tmp()
-
 	defer util.CloseLoggerOnAppExit()
+
+	server := &http.Server{
+		Addr:    ":" + config.AppPort,
+		Handler: routers.InitRouter(),
+	}
+
+	server.ListenAndServe()
+
+	if err := server.ListenAndServe(); err != nil {
+		util.Logger().Error("failed to run server", zap.Error(err))
+		os.Exit(1)
+	}
 }

@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/snghnaveen/url-shortner/routers"
-	"github.com/snghnaveen/url-shortner/util"
+	"github.com/snghnaveen/url-shortener/routers"
+	"github.com/snghnaveen/url-shortener/util"
 	"go.uber.org/zap"
 )
 

@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/snghnaveen/url-shortner/pkg/rest"
-	"github.com/snghnaveen/url-shortner/pkg/shortener"
+	"github.com/snghnaveen/url-shortener/pkg/rest"
+	"github.com/snghnaveen/url-shortener/pkg/shortener"
 )
 
 func Resolve(c *gin.Context) {
@@ -51,4 +51,18 @@ func Shorten(c *gin.Context) {
 		"shorten_url": c.Request.Host + "/resolve/" + shortenKey,
 		"shorten_key": shortenKey,
 	}, nil)
+}
+
+func Metrics(c *gin.Context) {
+	fetchTopXRecords := 3
+	app := rest.Gin{C: c}
+
+	res, err := shortener.GetTopRequested(int64(fetchTopXRecords))
+
+	if err != nil {
+		app.Response(http.StatusInternalServerError, "", err)
+		return
+	}
+
+	app.Response(http.StatusOK, res, nil)
 }

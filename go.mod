@@ -1,4 +1,4 @@
-module github.com/snghnaveen/url-shortner
+module github.com/snghnaveen/url-shortener
 
 go 1.20
 

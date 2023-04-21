@@ -2,7 +2,7 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	v1 "github.com/snghnaveen/url-shortner/routers/api/v1"
+	v1 "github.com/snghnaveen/url-shortener/routers/api/v1"
 )
 
 func InitRouter() *gin.Engine {
@@ -15,5 +15,7 @@ func InitRouter() *gin.Engine {
 	apiV1.GET("/health/check", v1.HealthCheck)
 	apiV1.GET("/resolve/:shorten_key", v1.Resolve)
 	apiV1.POST("/shorten", v1.Shorten)
+	apiV1.GET("/metrics-top-requested", v1.Metrics)
+
 	return r
 }

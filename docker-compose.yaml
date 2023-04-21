@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  app-url-shortner:
+  app-url-shortener:
     build:
       context: .
       dockerfile: Dockerfile.dev

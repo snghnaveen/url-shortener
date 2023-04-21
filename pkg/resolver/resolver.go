@@ -7,7 +7,7 @@ import (
 	"net/url"
 
 	"github.com/asaskevich/govalidator"
-	"github.com/snghnaveen/url-shortner/util"
+	"github.com/snghnaveen/url-shortener/util"
 	"go.uber.org/zap"
 )
 

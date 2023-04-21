@@ -8,13 +8,18 @@
 - Docker and docker-compose (optional)
 
 ### Installation
-- Clone repo
+Clone repo
     `git clone https://github.com/snghnaveen/url-shortener.git`
 
+---
 Using docker-compose (__recommended__)
 - Run docker-compose file
     `docker-compose up --build`
-
+---
+Using docker-compose (__recommended__ if not using docker-compose)
+- Run make file
+    `make run`
+---
 Using go command
 - Make sure redis is running OR set `ENVIRONMENT` variable to `testing` to skip redis server (It will use external package to mimic redis calls)
 - Verify and if required update the configs in [application.env](./application.env)
@@ -23,11 +28,23 @@ Using go command
 - Run app
     `go run main.go`
 
+### Running test
+- Run tests
+    ```
+    ENVIRONMENT=testing go test ./...
+    ```
+    or
+    ```
+    make test
+    ```
+
+You can github workflow the test case results.
+
+
 ### Usage
 Following are the APIs and their example response.
 
-1. Shorten given URL
-    Curl : 
+- Shorten given URL
     ```bash
     curl --location 'http://localhost:8080/v1/api/shorten' \
     --header 'Content-Type: application/json' \
@@ -45,9 +62,8 @@ Following are the APIs and their example response.
         }
     }
     ```
-
-1. Get URL from shorten key
-    Curl :
+---
+- Get URL from shorten key
     ```bash
     curl --location 'http://localhost:8080/v1/api/resolve/qNGbdjC7?type=json'
     ```
@@ -57,11 +73,12 @@ Following are the APIs and their example response.
     "error": false,
     "data": {
         "url": "https://snghnaveen.github.io"
-    }
+        }
     }
     ```
-1. Get metrics
-    Curl :
+    Note : Remove query param `type` to see redirection to actual url in action.
+---
+- Get metrics
     ```bash
     curl --location 'http://localhost:8080/v1/api/metrics-top-requested'
     ```

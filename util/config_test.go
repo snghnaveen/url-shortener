@@ -10,6 +10,6 @@ func TestIsProdMode(t *testing.T) {
 	t.Setenv(EnvKey, EnvProd)
 	assert.True(t, IsProdMode())
 
-	t.Setenv(EnvKey, EnvProd)
+	t.Setenv(EnvKey, EnvTesting)
 	assert.False(t, IsProdMode())
 }

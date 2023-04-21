@@ -66,7 +66,6 @@ func Shorten(c *gin.Context) {
 
 // Metrics returns top requested domains
 func Metrics(c *gin.Context) {
-	fetchTopXRecords := 3
 	app := rest.Gin{C: c}
 
 	res, err := shortener.GetTopRequested(int64(util.GetConfig().MaxMetricsRecords))

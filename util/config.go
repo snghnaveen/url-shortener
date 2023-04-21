@@ -68,7 +68,8 @@ func GetConfig() Config {
 }
 
 func IsProdMode() bool {
-	return GetConfig().Environment == EnvProd
+	return GetConfig().Environment == EnvProd ||
+		os.Getenv(EnvKey) == EnvProd
 }
 
 func IsTestingMode() bool {

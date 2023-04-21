@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  app-url-shortner:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    command: air
+    environment:
+      - REDIS_URL=redis://redis-db:6379/0
+    depends_on:
+      - redis-db
+    restart: always
+  redis-db:
+    image: redis:6.0
+    ports:
+      - "6379:6379"
+    restart: always

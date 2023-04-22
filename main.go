@@ -1,10 +1,10 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"os"
 
+	"github.com/snghnaveen/url-shortener/pkg/shortener"
 	"github.com/snghnaveen/url-shortener/routers"
 	"github.com/snghnaveen/url-shortener/util"
 	"go.uber.org/zap"
@@ -13,11 +13,18 @@ import (
 func main() {
 	config, err := util.LoadConfig(".")
 	if err != nil {
-		log.Fatal(err, "cannot load config")
+		panic(err.Error())
 	}
 
 	defer util.CloseLoggerOnAppExit()
 
+	// prepare some dummy data for metrics api
+	if err := shortener.ForTestCreateTestingData(); err != nil {
+		util.Logger().Error("failed to feed some mock data to", zap.Error(err))
+		os.Exit(1)
+	}
+
+	// configure server
 	server := &http.Server{
 		Addr:    ":" + config.AppPort,
 		Handler: routers.InitRouter(),
@@ -25,6 +32,7 @@ func main() {
 
 	server.ListenAndServe()
 
+	// start server
 	if err := server.ListenAndServe(); err != nil {
 		util.Logger().Error("failed to run server", zap.Error(err))
 		os.Exit(1)

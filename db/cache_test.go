@@ -21,7 +21,3 @@ func TestRedisConnectionPing(t *testing.T) {
 	_, err = rdb.Ping(context.Background()).Result()
 	assert.NoError(t, err)
 }
-
-func ForTestCreateTestingData() {
-	// @todo
-}

@@ -11,6 +11,8 @@ var (
 	EnvProd    = "production"
 	EnvDev     = "development"
 	EnvTesting = "testing"
+
+	ReqCounterKey = "req_counter"
 )
 
 var conf Config

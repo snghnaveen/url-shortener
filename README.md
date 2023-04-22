@@ -9,24 +9,37 @@
 
 ### Installation
 Clone repo
-    `git clone https://github.com/snghnaveen/url-shortener.git`
+    ```
+    git clone https://github.com/snghnaveen/url-shortener.git
+    ```
 
 ---
 Using docker-compose (__recommended__)
 - Run docker-compose file
-    `docker-compose up --build`
----
-Using docker-compose (__recommended__ if not using docker-compose)
-- Run make file
-    `make run`
+    ```
+    docker-compose up --build
+    ```
 ---
 Using go command
 - Make sure redis is running OR set `ENVIRONMENT` variable to `testing` to skip redis server (It will use external package to mimic redis calls)
 - Verify and if required update the configs in [application.env](./application.env)
-- Install packages
-    `go mod tidy`
-- Run app
-    `go run main.go`
+
+- Run app 
+    - Run make file
+    ```
+    make run
+    ```
+
+    OR 
+
+    - Install packages
+    ```
+    go mod tidy
+    ```
+    - Run app
+    ```
+    go run main.go
+    ```
 
 ### Running test
 - Run tests
@@ -40,7 +53,37 @@ Using go command
 
 You can github workflow the test case results.
 
+### Project Structure
 
+```bash
+
+├── Dockerfile.dev <--- Docker file for dev, uses air to run go app
+├── Makefile
+├── README.md
+├── application.env <--- app config
+├── db <--- Redis connection
+│   ├── 
+│   ├── 
+├── docker-compose.yaml
+├── go.mod
+├── go.sum
+├── main.go <--- main file
+├── pkg
+│   ├── resolver <--- service level logic
+│   │   ├── 
+│   │   └──
+│   ├── rest <--- REST api related common code
+│   │   ├──
+│   │   └──
+├── routers
+│   ├── api
+│   │   └── v1 <--- API group
+│   ├── routes.go <--- Registered endpoints
+└── util <--- common code (logger, config etc) 
+    ├── 
+    ├── 
+
+```
 ### Usage
 Following are the APIs and their example response.
 
@@ -76,9 +119,32 @@ Following are the APIs and their example response.
         }
     }
     ```
-    Note : Remove query param `type` to see redirection to actual url in action.
+    Note : Remove query param `type` to see  actual redirection.
 ---
 - Get metrics
     ```bash
     curl --location 'http://localhost:8080/v1/api/metrics-top-requested'
+    ```
+    Response :
+    ```json
+    {
+        "error": false,
+        "data": [
+            {
+                "rank": 1,
+                "score": 100,
+                "url": "https://snghnaveen.1.io/path"
+            },
+            {
+                "rank": 2,
+                "score": 50,
+                "url": "https://snghnaveen.2.io/path"
+            },
+            {
+                "rank": 3,
+                "score": 33,
+                "url": "https://snghnaveen.3.io/path"
+            }
+        ]
+    }
     ```

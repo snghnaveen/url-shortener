@@ -24,7 +24,7 @@ func TestShortenURL(t *testing.T) {
 
 	assert.NotEmpty(t, outShortenURL)
 
-	c, err := db.GetCacheClientWithDB(DB0)
+	c, err := db.GetCacheClientWithDB(db.DB0)
 	assert.NoError(t, err)
 
 	val, err := c.Get(context.TODO(), outShortenURL).Result()
@@ -33,7 +33,7 @@ func TestShortenURL(t *testing.T) {
 }
 
 func TestFetchShortenURxL(t *testing.T) {
-	c, err := db.GetCacheClientWithDB(DB0)
+	c, err := db.GetCacheClientWithDB(db.DB0)
 	assert.NoError(t, err)
 
 	t.Run("when key is present", func(t *testing.T) {
@@ -56,37 +56,11 @@ func TestFetchShortenURxL(t *testing.T) {
 }
 
 func TestGetTopRequested(t *testing.T) {
-	c, err := db.GetCacheClientWithDB(DB1)
-	assert.NoError(t, err)
-
+	assert.NoError(t, ForTestCreateTestingData())
 	// prepare some records
 	url1 := "https://snghnaveen.1.io/path"
 	url2 := "https://snghnaveen.2.io/path"
 	url3 := "https://snghnaveen.3.io/path"
-	url4 := "https://snghnaveen.4.io/path"
-	url5 := "https://snghnaveen.5.io/path"
-
-	for i := 1; i <= 100; i++ {
-		if i%1 == 0 {
-			assert.NoError(t, c.ZIncrBy(context.TODO(), reqCounterKey, 1, url1).Err())
-		}
-
-		if i%2 == 0 {
-			assert.NoError(t, c.ZIncrBy(context.TODO(), reqCounterKey, 1, url2).Err())
-		}
-
-		if i%3 == 0 {
-			assert.NoError(t, c.ZIncrBy(context.TODO(), reqCounterKey, 1, url3).Err())
-		}
-
-		if i%4 == 0 {
-			assert.NoError(t, c.ZIncrBy(context.TODO(), reqCounterKey, 1, url4).Err())
-		}
-
-		if i%5 == 0 {
-			assert.NoError(t, c.ZIncrBy(context.TODO(), reqCounterKey, 1, url5).Err())
-		}
-	}
 
 	out, err := GetTopRequested(3)
 	assert.NoError(t, err)

@@ -7,11 +7,12 @@ import (
 	"os"
 	"testing"
 
+	"github.com/snghnaveen/url-shortener/util"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestMain(m *testing.M) {
-	os.Setenv("ENVIRONMENT", "testing")
+	os.Setenv(util.EnvKey, util.EnvTesting)
 	result := m.Run()
 	os.Exit(result)
 }

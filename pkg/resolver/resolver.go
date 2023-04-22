@@ -36,6 +36,9 @@ func AddScheme(inURL string) string {
 // FormatURL will validate and returns *url.URL of given url
 func FormatURL(inURL string) (*url.URL, error) {
 	if !govalidator.IsURL(inURL) {
+		util.Logger().Error("url validation failed for : "+inURL,
+			zap.Error(errors.New("invalid url requested")))
+
 		return nil, errors.New("invalid url requested")
 	}
 
@@ -43,13 +46,8 @@ func FormatURL(inURL string) (*url.URL, error) {
 
 	u, err := url.Parse(inURL)
 	if err != nil {
-		util.Logger().Error("unable to parse error", zap.Error(err))
+		util.Logger().Error("unable to parse url", zap.Error(err))
 		return nil, err
-	}
-
-	if u.Host == "" {
-		util.Logger().Error("invalid url", zap.Error(err))
-		return nil, errors.New("invalid url")
 	}
 
 	return u, err

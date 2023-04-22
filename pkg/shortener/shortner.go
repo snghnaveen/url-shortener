@@ -2,6 +2,7 @@ package shortener
 
 import (
 	"context"
+	"net/url"
 	"time"
 
 	"github.com/snghnaveen/url-shortener/db"
@@ -85,14 +86,14 @@ func GetTopRequested(top int64) ([]map[string]interface{}, error) {
 	out := make([]map[string]interface{}, 0)
 	for i, record := range topDomains {
 		out = append(out, map[string]interface{}{
-			"rank":  i + 1,
-			"url":   record.Member,
-			"score": record.Score,
+			"rank":   i + 1,
+			"domain": record.Member,
+			"score":  record.Score,
 		})
 
 		util.Logger().Info("top requested domain ranking",
 			zap.Any("rank", i+1),
-			zap.Any("url", record.Member),
+			zap.Any("domain", record.Member),
 			zap.Any("score", record.Score),
 		)
 	}
@@ -122,36 +123,62 @@ func ForTestCreateTestingData() error {
 
 	for i := 1; i <= 100; i++ {
 		if i%1 == 0 {
+
+			parsedURL, err := url.Parse(inURLs[0])
+			if err != nil {
+				return err
+			}
+
 			if err := c2.ZIncrBy(context.TODO(),
-				util.ReqCounterKey, 1, inURLs[0]).Err(); err != nil {
+				util.ReqCounterKey, 1, parsedURL.Hostname()).Err(); err != nil {
 				return err
 			}
 		}
 
 		if i%2 == 0 {
+			parsedURL, err := url.Parse(inURLs[1])
+			if err != nil {
+				return err
+			}
+
 			if err := c2.ZIncrBy(context.TODO(),
-				util.ReqCounterKey, 1, inURLs[1]).Err(); err != nil {
+				util.ReqCounterKey, 1, parsedURL.Hostname()).Err(); err != nil {
 				return err
 			}
 		}
 
 		if i%3 == 0 {
+			parsedURL, err := url.Parse(inURLs[2])
+			if err != nil {
+				return err
+			}
+
 			if err := c2.ZIncrBy(context.TODO(),
-				util.ReqCounterKey, 1, inURLs[2]).Err(); err != nil {
+				util.ReqCounterKey, 1, parsedURL.Hostname()).Err(); err != nil {
 				return err
 			}
 		}
 
 		if i%4 == 0 {
+			parsedURL, err := url.Parse(inURLs[3])
+			if err != nil {
+				return err
+			}
+
 			if err := c2.ZIncrBy(context.TODO(),
-				util.ReqCounterKey, 1, inURLs[3]).Err(); err != nil {
+				util.ReqCounterKey, 1, parsedURL.Hostname()).Err(); err != nil {
 				return err
 			}
 		}
 
 		if i%5 == 0 {
+			parsedURL, err := url.Parse(inURLs[4])
+			if err != nil {
+				return err
+			}
+
 			if err := c2.ZIncrBy(context.TODO(),
-				util.ReqCounterKey, 1, inURLs[4]).Err(); err != nil {
+				util.ReqCounterKey, 1, parsedURL.Hostname()).Err(); err != nil {
 				return err
 			}
 		}

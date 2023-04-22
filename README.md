@@ -133,17 +133,17 @@ Following are the APIs and their example response.
             {
                 "rank": 1,
                 "score": 100,
-                "url": "https://snghnaveen.1.io/path"
+                "domain": "https://snghnaveen.1.io"
             },
             {
                 "rank": 2,
                 "score": 50,
-                "url": "https://snghnaveen.2.io/path"
+                "domain": "https://snghnaveen.2.io"
             },
             {
                 "rank": 3,
                 "score": 33,
-                "url": "https://snghnaveen.3.io/path"
+                "domain": "https://snghnaveen.3.io"
             }
         ]
     }

@@ -2,7 +2,6 @@
 ENVIRONMENT ?= testing
 APP_PORT ?= 8081
 
-
 tidy:
 	go mod tidy
 
@@ -24,6 +23,7 @@ test:
 
 # Show help
 help:
+	@echo "make tidy - Ensures packages in go.mod"
 	@echo "make build - Build the application"
 	@echo "make run - Run the application"
 	@echo "make clean - Clean up the build artifacts"

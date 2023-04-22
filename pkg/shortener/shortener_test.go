@@ -57,10 +57,11 @@ func TestFetchShortenURxL(t *testing.T) {
 
 func TestGetTopRequested(t *testing.T) {
 	assert.NoError(t, ForTestCreateTestingData())
-	// prepare some records
-	url1 := "https://snghnaveen.1.io/path"
-	url2 := "https://snghnaveen.2.io/path"
-	url3 := "https://snghnaveen.3.io/path"
+
+	// refer to ForTestCreateTestingData for test data i.e domain
+	domain1 := "snghnaveen.1.io"
+	domain2 := "snghnaveen.2.io"
+	domain3 := "snghnaveen.3.io"
 
 	out, err := GetTopRequested(3)
 	assert.NoError(t, err)
@@ -69,21 +70,21 @@ func TestGetTopRequested(t *testing.T) {
 	for i, v := range out {
 		rank := i + 1
 		if rank == 1 {
-			assert.Equal(t, v["url"], url1)
+			assert.Equal(t, v["domain"], domain1)
 			assert.Equal(t, v["rank"], 1)
-			assert.Equal(t, v["score"], float64(100))
+			assert.Equal(t, v["score"], float64(101))
 		}
 
 		if rank == 2 {
-			assert.Equal(t, v["url"], url2)
+			assert.Equal(t, v["domain"], domain2)
 			assert.Equal(t, v["rank"], 2)
-			assert.Equal(t, v["score"], float64(50))
+			assert.Equal(t, v["score"], float64(51))
 		}
 
 		if rank == 3 {
-			assert.Equal(t, v["url"], url3)
+			assert.Equal(t, v["domain"], domain3)
 			assert.Equal(t, v["rank"], 3)
-			assert.Equal(t, v["score"], float64(33))
+			assert.Equal(t, v["score"], float64(34))
 		}
 	}
 }

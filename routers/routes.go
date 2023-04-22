@@ -13,9 +13,8 @@ func InitRouter() *gin.Engine {
 	apiV1 := r.Group("/v1/api")
 
 	apiV1.GET("/health/check", v1.HealthCheck)
-	apiV1.GET("/resolve/:shorten_key", v1.Resolve)
 	apiV1.POST("/shorten", v1.Shorten)
+	apiV1.GET("/resolve/:shorten_key", v1.Resolve)
 	apiV1.GET("/metrics-top-requested", v1.Metrics)
-
 	return r
 }

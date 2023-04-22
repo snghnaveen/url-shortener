@@ -38,13 +38,14 @@ func Resolve(c *gin.Context) {
 	}
 }
 
-type ShortenReqBody struct {
-	URL string `json:"url"`
-}
-
 // Shorten shortens a given url
 func Shorten(c *gin.Context) {
 	app := rest.Gin{C: c}
+
+	type ShortenReqBody struct {
+		URL string `json:"url"`
+	}
+
 	var req ShortenReqBody
 
 	if err := c.ShouldBindJSON(&req); err != nil {

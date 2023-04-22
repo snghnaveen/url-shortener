@@ -131,19 +131,19 @@ Following are the APIs and their example response.
         "error": false,
         "data": [
             {
+                "domain": "snghnaveen.1.io",
                 "rank": 1,
-                "score": 100,
-                "domain": "https://snghnaveen.1.io"
+                "score": 101
             },
             {
+                "domain": "snghnaveen.2.io",
                 "rank": 2,
-                "score": 50,
-                "domain": "https://snghnaveen.2.io"
+                "score": 51
             },
             {
+                "domain": "snghnaveen.3.io",
                 "rank": 3,
-                "score": 33,
-                "domain": "https://snghnaveen.3.io"
+                "score": 34
             }
         ]
     }

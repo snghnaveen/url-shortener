@@ -14,7 +14,7 @@ RUN go mod download
 RUN go build -o main .
 
 # Expose port 8080 for the app
-EXPOSE 8080
+EXPOSE 80
 
 # Command to run the executable
 CMD ["./main"]

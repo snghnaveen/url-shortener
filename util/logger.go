@@ -25,11 +25,10 @@ func SetupLogger() {
 		panic("Error creating production logger")
 	}
 
+	logger = devLogger
 	// Set the logger to use in the app
 	if IsProdMode() {
 		logger = prodLogger
-	} else {
-		logger = devLogger
 	}
 
 	// Use the logger to write some logs

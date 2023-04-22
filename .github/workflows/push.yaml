@@ -1,4 +1,4 @@
-name: golang-algo-practice
+name: url-shortener
 on: [push]
 
 jobs:

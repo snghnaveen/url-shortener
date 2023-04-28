@@ -1,5 +1,5 @@
 # url-shortener
-`url-shortener` a backend app which give shortened url for a full url.
+- Sample `url-shortner` backend api to demonstrate golang backend using golang (gin) with unit test cases.
 
 ### Prerequisite
 - golang (`go1.20` or above)
